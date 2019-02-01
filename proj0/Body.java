@@ -5,7 +5,7 @@ public class Body {
     public double yyVel;
     public double mass;
     public String imgFileName;
-    final static double gconst = 6.67e-11;
+    public static final double gconst = 6.67e-11;
 
     /** Body object constructor */
     public Body(double xP, double yP, double xV, double yV, double m, String img) {
@@ -83,7 +83,7 @@ public class Body {
         this.yyPos = this.yyPos + (this.yyVel * time);
     }
 
-    public void Draw() {
+    public void draw() {
         StdDraw.picture(this.xxPos, this.yyPos, this.imgFileName);
     }
 }
