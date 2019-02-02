@@ -95,21 +95,22 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         IntList newlist = IntList.of(A.first);
+        IntList place = newlist;
         A = A.rest;
-        IntList placeholder = newlist;
         while (A.rest != null) {
             newlist.rest = IntList.of(A.first);
-            newlist = newlist.rest;
             A = A.rest;
+            newlist = newlist.rest;
         }
         newlist.rest = IntList.of(A.first);
+        newlist = newlist.rest;
         while (B.rest != null) {
             newlist.rest = IntList.of(B.first);
             B = B.rest;
+            newlist = newlist.rest;
         }
-        newlist = newlist.rest;
         newlist.rest = IntList.of(B.first);
-        return placeholder;
+        return place;
     }
 
 
