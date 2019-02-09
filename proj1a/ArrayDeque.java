@@ -1,8 +1,11 @@
-public class ArrayDeque<Item> {
+import java.lang.reflect.Array;
+
+public class ArrayDeque<T> {
     private int size;
-    private Item[] storage;
+    private T[] storage;
     private int first;
     private int last;
+    private int length;
 
     /** Returns an updated integer using i. If increasing, increases the index of i. If not,
      * decreases the i. If decreasing and i is 0, the method loops i to the end
@@ -11,14 +14,14 @@ public class ArrayDeque<Item> {
      * @param increase
      * @return updated i
      */
-    private int update_first(int i, boolean increase) {
+    private int UpdateFirst(int i, boolean increase) {
         if (increase) {
             if (i == storage.length - 1) {
                 return 0;
             } else {
                 return i + 1;
             }
-        } else if (i == last) {
+        } else if (storage[first] == null){
             return i;
         } else {
             if (i == 0) {
@@ -29,7 +32,7 @@ public class ArrayDeque<Item> {
         }
     }
 
-    private void update_last(boolean increase) {
+    private void UpdateLast(boolean increase) {
         if (increase) {
             if (last == storage.length - 1) {
                 last = 0;
@@ -43,55 +46,79 @@ public class ArrayDeque<Item> {
         }
     }
 
+    private void resize() {
+        T[] newlist;
+        if (size > 16 && size / length < 0.25) {
+            newlist = (T []) new Object[];
+            System.arraycopy(storage, 0, newlist, 0, size);
+            storage = newlist;
+        } else if (size == length - 1) {
+            newlist = (T []) new Object[size * 3];
+            System.arraycopy(storage, 0, newlist, 0, size);
+            storage = newlist;
+        } else {
+            return;
+        }
+
+    }
+
     public ArrayDeque() {
-        storage = (Item []) new Object[8];
+        storage = (T []) new Object[8];
         first = 0;
         last = 1;
         size = 0;
+        length = 8;
     }
 
-    public ArrayDeque(int s) {
-        storage = (Item []) new Object[s];
-        first = 0;
-        last = 1;
-        size = s;
-    }
+//    public ArrayDeque(ArrayDeque other) {
+//        ArrayDeque result = new ArrayDeque(other.size());
+//
+//    }
 
-    public ArrayDeque(ArrayDeque other) {
-        ArrayDeque result = new ArrayDeque(other.size());
-
-    }
-
-    public void addFirst(Item object) {
+    public void addFirst(T object) {
+        resize();
         storage[first] = object;
         size += 1;
-        first = update_first(first, false);
+        first = UpdateFirst(first, false);
     }
 
-    public void addLast(Item object) {
-        storage[last] = object;
+    public void addLast(T object) {
+        resize();
+        if (size == 0) {
+            storage[0] = object;
+            first = UpdateFirst(first, false);
+        } else {
+            storage[last] = object;
+            UpdateLast(true);
+        }
         size += 1;
-        update_last(true);
     }
 
-    public Item removeFirst() {
-        Item result;
-        if (first == storage.length - 1) {
+    public T removeFirst() {
+        T result;
+        resize();
+        if (size == 0) {
+            return null;
+        } else if (first == storage.length - 1) {
             result = storage[0];
             storage[0] = null;
         } else {
             result = storage[first + 1];
             storage[first + 1] = null;
         }
-        first = update_first(first, true);
+        first = UpdateFirst(first, true);
         size -= 1;
         return result;
     }
 
-    public Item removeLast() {
-        Item result = storage[last - 1];
+    public T removeLast() {
+        resize();
+        if (size == 0) {
+            return null;
+        }
+        T result = storage[last - 1];
         storage[last - 1] = null;
-        update_last(false);
+        UpdateLast(false);
         size -= 1;
         return result;
     }
@@ -108,13 +135,15 @@ public class ArrayDeque<Item> {
     }
 
     public void printDeque() {
-        for (int p_first = update_first(first, true); storage[p_first ] != null; p_first = update_first(p_first, true)) {
-            System.out.print(storage[p_first] + " ");
+        int Pfirst = UpdateFirst(first, true);
+        while (storage[Pfirst ] != null) {
+            System.out.print(storage[Pfirst] + " ");
+            Pfirst = UpdateFirst(Pfirst, true);
         }
         System.out.println("");
     }
 
-    public Item get(int index) {
+    public T get(int index) {
         return storage[index];
     }
 }

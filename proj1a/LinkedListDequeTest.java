@@ -1,4 +1,7 @@
 import org.junit.Test;
+
+import java.lang.reflect.Array;
+
 import static org.junit.Assert.*;
 
 
@@ -91,27 +94,38 @@ public class LinkedListDequeTest {
     }
 
     public static void main(String[] args) {
-        System.out.println("Running tests.\n");
-        addIsEmptySizeTest();
-        addRemoveTest();
-        LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
-        l1.addFirst(2);
-        l1.addLast(3);
-        int input = l1.getRecursive(1);
-        int expected = 3;
-        assertEquals(input, expected);
+//        System.out.println("Running tests.\n");
+//        addIsEmptySizeTest();
+//        addRemoveTest();
+//        LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
+//        l1.addFirst(2);
+//        l1.addLast(3);
+//        int input = l1.getRecursive(1);
+//        int expected = 3;
+//        assertEquals(input, expected);
+
+        ArrayDeque<Integer> f = new ArrayDeque<>();
+        f.isEmpty();
+        f.addFirst(6);
+        f.removeFirst();
+        f.addLast(6);
+        f.removeLast();
+        f.size();
+        f.addFirst(6);
+        f.addFirst(6);
+        f.addFirst(6);
+        f.printDeque();
 
         ArrayDeque<Integer> x = new ArrayDeque<>();
-        x.isEmpty();
-        x.addFirst(6);
-        x.removeFirst();
-        x.addLast(6);
+        x.addFirst(0);
         x.removeLast();
-        x.size();
-        x.addFirst(6);
-        x.addFirst(6);
-        x.addFirst(6);
-        x.printDeque();
+        x.addLast(2);
+        x.addLast(3);
+        x.get(0);
+        x.removeLast();
+        x.removeFirst();
+        x.addLast(7);
+        x.get(0);
     }
 
     @Test
