@@ -14,14 +14,14 @@ public class ArrayDeque<T> {
      * @param increase
      * @return updated i
      */
-    private int UpdateFirst(int i, boolean increase) {
+    private int updateFirst(int i, boolean increase) {
         if (increase) {
             if (i == storage.length - 1) {
                 return 0;
             } else {
                 return i + 1;
             }
-        } else if (storage[first] == null){
+        } else if (storage[first] == null) {
             return i;
         } else {
             if (i == 0) {
@@ -32,7 +32,7 @@ public class ArrayDeque<T> {
         }
     }
 
-    private void UpdateLast(boolean increase) {
+    private void updateLast(boolean increase) {
         if (increase) {
             if (last == storage.length - 1) {
                 last = 0;
@@ -49,7 +49,7 @@ public class ArrayDeque<T> {
     private void resize() {
         T[] newlist;
         if (size > 16 && size / length < 0.25) {
-            newlist = (T []) new Object[];
+            newlist = (T []) new Object[size + 1];
             System.arraycopy(storage, 0, newlist, 0, size);
             storage = newlist;
         } else if (size == length - 1) {
@@ -79,17 +79,17 @@ public class ArrayDeque<T> {
         resize();
         storage[first] = object;
         size += 1;
-        first = UpdateFirst(first, false);
+        first = updateFirst(first, false);
     }
 
     public void addLast(T object) {
         resize();
         if (size == 0) {
             storage[0] = object;
-            first = UpdateFirst(first, false);
+            first = updateFirst(first, false);
         } else {
             storage[last] = object;
-            UpdateLast(true);
+            updateLast(true);
         }
         size += 1;
     }
@@ -106,7 +106,7 @@ public class ArrayDeque<T> {
             result = storage[first + 1];
             storage[first + 1] = null;
         }
-        first = UpdateFirst(first, true);
+        first = updateFirst(first, true);
         size -= 1;
         return result;
     }
@@ -118,7 +118,7 @@ public class ArrayDeque<T> {
         }
         T result = storage[last - 1];
         storage[last - 1] = null;
-        UpdateLast(false);
+        updateLast(false);
         size -= 1;
         return result;
     }
@@ -135,10 +135,10 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        int Pfirst = UpdateFirst(first, true);
-        while (storage[Pfirst ] != null) {
-            System.out.print(storage[Pfirst] + " ");
-            Pfirst = UpdateFirst(Pfirst, true);
+        int pFirst = updateFirst(first, true);
+        while (storage[pFirst ] != null) {
+            System.out.print(storage[pFirst] + " ");
+            pFirst = updateFirst(pFirst, true);
         }
         System.out.println("");
     }
