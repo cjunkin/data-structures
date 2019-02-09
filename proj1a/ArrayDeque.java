@@ -38,7 +38,11 @@ public class ArrayDeque<T> {
                 return i + 1;
             }
         } else {
-            return i - 1;
+            if (i == 0) {
+                return storage.length - 1;
+            } else {
+                return i - 1;
+            }
         }
     }
 
@@ -120,13 +124,14 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         } else if (first == storage.length - 1) {
-            result = storage[0];
-            storage[0] = null;
+            first = updateFirst(first, true);
+            result = storage[first];
+            storage[first] = null;
         } else {
-            result = storage[first + 1];
-            storage[first + 1] = null;
+            first = updateFirst(first, true);
+            result = storage[first];
+            storage[first] = null;
         }
-        first = updateFirst(first, true);
         size -= 1;
         return result;
     }
@@ -136,9 +141,9 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T result = storage[last - 1];
-        storage[last - 1] = null;
         last = updateLast(last, false);
+        T result = storage[last];
+        storage[last] = null;
         size -= 1;
         return result;
     }
@@ -164,6 +169,7 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
+        index = updateFirst(first + index, true);
         return storage[index];
     }
 }

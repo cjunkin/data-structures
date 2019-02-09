@@ -118,19 +118,11 @@ public class LinkedListDequeTest {
 
         ArrayDeque<Integer> x = new ArrayDeque<>();
         x.addLast(0);
-        x.removeLast();
-        x.isEmpty();
-        x.isEmpty();
-        x.isEmpty();
-        x.addLast(5);
-        x.removeLast();
-//        x.addLast(2);
-//        x.addLast(3);
-//        x.get(0);
-//        x.removeLast();
-//        x.removeFirst();
-//        x.addLast(7);
-//        x.get(0);
+        x.addFirst(1);
+        x.addFirst(2);
+        x.addFirst(3);
+        x.addLast(4);
+        x.get(0);
 
         ArrayDeque<Integer> s = new ArrayDeque<>();
         int i = 15;
