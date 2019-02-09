@@ -14,7 +14,7 @@ public class ArrayDeque<T> {
      */
     private int updateFirst(int i, boolean increase) {
         if (increase) {
-            if (i == storage.length - 1) {
+            if (i == storage.length - 1 || i > storage.length) {
                 return 0;
             } else {
                 return i + 1;
@@ -32,7 +32,7 @@ public class ArrayDeque<T> {
 
     private int updateLast(int i, boolean increase) {
         if (increase) {
-            if (i == storage.length - 1) {
+            if (i == storage.length - 1 || i > storage.length) {
                 return 0;
             } else {
                 return i + 1;
@@ -63,11 +63,11 @@ public class ArrayDeque<T> {
             first = length - 1;
             last = size;
         } else if (size == length - 1) {
-            int i = updateFirst(first, true);
+            int i = 0;
             int place = 0;
             length = length * 2;
             newList = (T []) new Object[length];
-            while (i != last) {
+            while (i < size) {
                 newList[place] = get(i);
                 i = updateFirst(i, true);
                 place += 1;
@@ -169,7 +169,11 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index) {
-        index = updateFirst(first + index, true);
-        return storage[index];
+        int pointer = updateFirst(first, true);
+        while (index > 0) {
+            pointer = updateFirst(pointer, true);
+            index -= 1;
+        }
+        return storage[pointer];
     }
 }

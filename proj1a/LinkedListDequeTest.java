@@ -126,7 +126,7 @@ public class LinkedListDequeTest {
 
         ArrayDeque<Integer> s = new ArrayDeque<>();
         int i = 15;
-        while (i > 0) {
+        while (i > 8) {
             s.addFirst(0);
             i -= 1;
         }
