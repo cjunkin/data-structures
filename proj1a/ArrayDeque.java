@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-
 public class ArrayDeque<T> {
     private int size;
     private T[] storage;
@@ -93,7 +91,7 @@ public class ArrayDeque<T> {
         last = other.last;
         size = other.size;
         length = other.length;
-        System.arraycopy(other.storage, 0, storage,0, size);
+        System.arraycopy(other.storage, 0, storage, 0, size);
     }
 
     public void addFirst(T object) {
@@ -108,6 +106,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             storage[0] = object;
             first = updateFirst(first, false);
+            last = 1;
         } else {
             storage[last] = object;
             last = updateLast(last, true);
