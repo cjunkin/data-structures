@@ -130,18 +130,22 @@ public class LinkedListDequeTest {
         ArrayDeque<Integer> s = new ArrayDeque<>();
         int i = 15;
         while (i > 0) {
+            s.addFirst(0);
+            i -= 1;
+        }
+        while (i > -4) {
             s.addLast(0);
             i -= 1;
         }
-        while (i > -5) {
-            s.addLast(0);
-            i -= 1;
+        s.removeLast();
+        while (i > -10) {
+            s.removeLast();
+            i += -1;
         }
-        s.removeLast();
-        s.removeLast();
-        s.removeLast();
-        s.removeLast();
-        s.removeLast();
+        while (i > -16) {
+            s.removeLast();
+            i += -1;
+        }
 
 //
 //        l1.addFirst(1);

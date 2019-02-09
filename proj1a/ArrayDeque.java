@@ -46,25 +46,32 @@ public class ArrayDeque<T> {
 
     private void resize() {
         T[] newList;
-        if (size > 16 && size / length < 0.25) {
-            int oldLength = length;
+        double percentage = 100.0 * size / length;
+        if (length > 16 && percentage < 25) {
+            int i = updateFirst(first, true);
+            int place = 0;
             length = size * 2;
             newList = (T []) new Object[length];
-            System.arraycopy(storage, updateFirst(first, true), newList, 0, oldLength - updateFirst(first, true));
-            System.arraycopy(storage, updateLast(last, false), newList, oldLength - updateFirst(first, true), last);
+            while (i != last) {
+                newList[place] = get(i);
+                i = updateFirst(i, true);
+                place += 1;
+            }
             storage = newList;
-            first = Array.getLength(storage) - 1;
+            first = length - 1;
             last = size;
         } else if (size == length - 1) {
-            int oldLength = length;
+            int i = updateFirst(first, true);
+            int place = 0;
             length = length * 2;
             newList = (T []) new Object[length];
-            System.arraycopy(storage, updateFirst(first, true), newList, 0, oldLength - updateFirst(first, true));
-            int woah = oldLength - updateFirst(first, true);
-            
-            System.arraycopy(storage, 0, newList, oldLength - updateFirst(first, true), last);
+            while (i != last) {
+                newList[place] = get(i);
+                i = updateFirst(i, true);
+                place += 1;
+            }
             storage = newList;
-            first = Array.getLength(storage) - 1;
+            first = length - 1;
             last = size;
         } else {
             return;
