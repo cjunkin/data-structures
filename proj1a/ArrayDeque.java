@@ -32,30 +32,40 @@ public class ArrayDeque<T> {
         }
     }
 
-    private void updateLast(boolean increase) {
+    private int updateLast(int i, boolean increase) {
         if (increase) {
-            if (last == storage.length - 1) {
-                last = 0;
+            if (i == storage.length - 1) {
+                return 0;
             } else {
-                last += 1;
+                return i + 1;
             }
-        } else if (first == last) {
-            last += 1;
         } else {
-            last -= 1;
+            return i - 1;
         }
     }
 
     private void resize() {
-        T[] newlist;
+        T[] newList;
         if (size > 16 && size / length < 0.25) {
-            newlist = (T []) new Object[size + 1];
-            System.arraycopy(storage, 0, newlist, 0, size);
-            storage = newlist;
+            int oldLength = length;
+            length = size * 2;
+            newList = (T []) new Object[length];
+            System.arraycopy(storage, updateFirst(first, true), newList, 0, oldLength - updateFirst(first, true));
+            System.arraycopy(storage, updateLast(last, false), newList, oldLength - updateFirst(first, true), last);
+            storage = newList;
+            first = Array.getLength(storage) - 1;
+            last = size;
         } else if (size == length - 1) {
-            newlist = (T []) new Object[size * 3];
-            System.arraycopy(storage, 0, newlist, 0, size);
-            storage = newlist;
+            int oldLength = length;
+            length = length * 2;
+            newList = (T []) new Object[length];
+            System.arraycopy(storage, updateFirst(first, true), newList, 0, oldLength - updateFirst(first, true));
+            int woah = oldLength - updateFirst(first, true);
+            
+            System.arraycopy(storage, 0, newList, oldLength - updateFirst(first, true), last);
+            storage = newList;
+            first = Array.getLength(storage) - 1;
+            last = size;
         } else {
             return;
         }
@@ -70,10 +80,14 @@ public class ArrayDeque<T> {
         length = 8;
     }
 
-//    public ArrayDeque(ArrayDeque other) {
-//        ArrayDeque result = new ArrayDeque(other.size());
-//
-//    }
+    public ArrayDeque(ArrayDeque other) {
+        storage = (T []) new Object[other.size];
+        first = other.first;
+        last = other.last;
+        size = other.size;
+        length = other.length;
+        System.arraycopy(other.storage, 0, storage,0, size);
+    }
 
     public void addFirst(T object) {
         resize();
@@ -89,7 +103,7 @@ public class ArrayDeque<T> {
             first = updateFirst(first, false);
         } else {
             storage[last] = object;
-            updateLast(true);
+            last = updateLast(last, true);
         }
         size += 1;
     }
@@ -118,7 +132,7 @@ public class ArrayDeque<T> {
         }
         T result = storage[last - 1];
         storage[last - 1] = null;
-        updateLast(false);
+        last = updateLast(last, false);
         size -= 1;
         return result;
     }

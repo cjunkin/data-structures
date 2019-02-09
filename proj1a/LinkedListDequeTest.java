@@ -97,46 +97,62 @@ public class LinkedListDequeTest {
 //        System.out.println("Running tests.\n");
 //        addIsEmptySizeTest();
 //        addRemoveTest();
-        LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
+//        LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
 //        l1.addFirst(2);
 //        l1.addLast(3);
 //        int input = l1.getRecursive(1);
 //        int expected = 3;
 //        assertEquals(input, expected);
 
-//        ArrayDeque<Integer> f = new ArrayDeque<>();
-//        f.isEmpty();
-//        f.addFirst(6);
-//        f.removeFirst();
-//        f.addLast(6);
-//        f.removeLast();
-//        f.size();
-//        f.addFirst(6);
-//        f.addFirst(6);
-//        f.addFirst(6);
-//        f.printDeque();
+        ArrayDeque<Integer> f = new ArrayDeque<>();
+        f.isEmpty();
+        f.addFirst(6);
+        f.removeFirst();
+        f.addLast(6);
+        f.removeLast();
+        f.size();
+        f.addFirst(6);
+        f.addFirst(6);
+        f.addFirst(6);
+        f.printDeque();
+
+        ArrayDeque<Integer> x = new ArrayDeque<>();
+        x.addFirst(0);
+        x.removeLast();
+        x.addLast(2);
+        x.addLast(3);
+        x.get(0);
+        x.removeLast();
+        x.removeFirst();
+        x.addLast(7);
+        x.get(0);
+
+        ArrayDeque<Integer> s = new ArrayDeque<>();
+        int i = 15;
+        while (i > 0) {
+            s.addLast(0);
+            i -= 1;
+        }
+        while (i > -5) {
+            s.addLast(0);
+            i -= 1;
+        }
+        s.removeLast();
+        s.removeLast();
+        s.removeLast();
+        s.removeLast();
+        s.removeLast();
+
 //
-//        ArrayDeque<Integer> x = new ArrayDeque<>();
-//        x.addFirst(0);
-//        x.removeLast();
-//        x.addLast(2);
-//        x.addLast(3);
-//        x.get(0);
-//        x.removeLast();
-//        x.removeFirst();
-//        x.addLast(7);
-//        x.get(0);
-
-
-        l1.addFirst(1);
-        l1.addFirst(2);
-        l1.addFirst(3);
-        l1.removeLast();
-        l1.addFirst(5);
-        l1.addLast(6);
-        l1.removeFirst();
-        l1.getRecursive(0);
-        l1.removeFirst();
+//        l1.addFirst(1);
+//        l1.addFirst(2);
+//        l1.addFirst(3);
+//        l1.removeLast();
+//        l1.addFirst(5);
+//        l1.addLast(6);
+//        l1.removeFirst();
+//        l1.getRecursive(0);
+//        l1.removeFirst();
     }
 
     @Test
