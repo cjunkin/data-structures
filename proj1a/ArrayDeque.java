@@ -49,28 +49,20 @@ public class ArrayDeque<T> {
     private void resize() {
         T[] newList;
         double percentage = 100.0 * size / length;
-        if (length > 16 && percentage < 25) {
-            int i = updateFirst(first, true);
-            int place = 0;
-            length = size * 2;
+        if (length > 16 && percentage < 30) {
+            length = size + 1;
             newList = (T []) new Object[length];
-            while (i != last) {
-                newList[place] = get(i);
-                i = updateFirst(i, true);
-                place += 1;
+            for (int i = 0; i < size; i = updateFirst(i, true)) {
+                newList[i] = get(i);
             }
             storage = newList;
             first = length - 1;
             last = size;
         } else if (size == length - 1) {
-            int i = 0;
-            int place = 0;
             length = length * 2;
             newList = (T []) new Object[length];
-            while (i < size) {
-                newList[place] = get(i);
-                i = updateFirst(i, true);
-                place += 1;
+            for (int i = 0; i < size; i = updateFirst(i, true)) {
+                newList[i] = get(i);
             }
             storage = newList;
             first = length - 1;
@@ -95,7 +87,7 @@ public class ArrayDeque<T> {
         last = other.size;
         size = other.size;
         length = other.length;
-        for (int i = 0; i != last; i = updateFirst(i, true)) {
+        for (int i = 0; i < size; i = updateFirst(i, true)) {
             storage[i] = (T) other.get(i);
         }
     }

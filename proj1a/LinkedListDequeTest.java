@@ -136,25 +136,39 @@ public class LinkedListDequeTest {
 //        x.get(0);
 
         ArrayDeque<Integer> x = new ArrayDeque<>();
-        x.addLast(0);
-        x.addLast(1);
-        x.removeLast()     ;
-        x.removeFirst()    ;
-        x.addLast(4);
-        x.addFirst(5);
-        x.addFirst(6);
-        x.addLast(7);
-        x.removeLast()    ;
-        x.removeLast()    ;
-        x.removeLast()     ;
-        x.addLast(11);
-        x.removeLast()     ;
-        x.removeFirst()    ;
-        x.addFirst(14);
-        x.get(0)    ;
-        x.removeFirst()  ;
-        x.addLast(17);
-        x.get(0);
+//        x.addLast(0);
+//        x.addLast(1);
+//        x.removeLast()     ;
+//        x.removeFirst()    ;
+//        x.addLast(4);
+//        x.addFirst(5);
+//        x.addFirst(6);
+//        x.addLast(7);
+//        x.removeLast()    ;
+//        x.removeLast()    ;
+//        x.removeLast()     ;
+//        x.addLast(11);
+//        x.removeLast()     ;
+//        x.removeFirst()    ;
+//        x.addFirst(14);
+//        x.get(0)    ;
+//        x.removeFirst()  ;
+//        x.addLast(17);
+//        x.get(0);
+        int i = 100;
+        while (i > 0) {
+            x.addFirst(0);
+            i -= 1;
+        }
+        while (i > -50) {
+            x.removeFirst();
+            i -= 1;
+        }
+        while (i > -100) {
+            x.removeFirst();
+            i -= 1;
+        }
+
 
 //        x<Integer> s = new x<>();
 //        int i = 15;
