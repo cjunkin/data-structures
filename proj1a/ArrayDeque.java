@@ -16,7 +16,7 @@ public class ArrayDeque<T> {
         if (increase) {
             if (i == storage.length - 1) {
                 return 0;
-            } else if (i > storage.length) {
+            } else if (i >= storage.length) {
                 return i - storage.length + 1;
             } else {
                 return i + 1;
