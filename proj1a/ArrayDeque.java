@@ -114,14 +114,8 @@ public class ArrayDeque<T> {
      */
     public void addLast(T object) {
         resize();
-        if (size == 0) {
-            storage[0] = object;
-            first = updateFirst(first, false);
-            last = 1;
-        } else {
-            storage[last] = object;
-            last = updateLast(last, true);
-        }
+        storage[last] = object;
+        last = updateLast(last, true);
         size += 1;
     }
 

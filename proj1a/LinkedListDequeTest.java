@@ -104,7 +104,7 @@ public class LinkedListDequeTest {
 //        int expected = 3;
 //        assertEquals(input, expected);
 
-//        ArrayDeque<Integer> f = new ArrayDeque<>();
+//        x<Integer> f = new x<>();
 //        f.isEmpty();
 //        f.addFirst(6);
 //        f.removeFirst();
@@ -116,26 +116,47 @@ public class LinkedListDequeTest {
 //        f.addFirst(6);
 //        f.printDeque();
 
+//        x<Integer> x = new x<>();
+//        x.addLast(0);
+//        x.addFirst(1);
+//        x.addFirst(2);
+//        x.addFirst(3);
+//        x.addLast(4);
+//        x.addLast(4);
+//        x.addLast(4);
+//        new x(x);
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.removeFirst();
+//        x.get(0);
+
         ArrayDeque<Integer> x = new ArrayDeque<>();
         x.addLast(0);
-        x.addFirst(1);
-        x.addFirst(2);
-        x.addFirst(3);
+        x.addLast(1);
+        x.removeLast()     ;
+        x.removeFirst()    ;
         x.addLast(4);
-        x.addLast(4);
-        x.addLast(4);
-        new ArrayDeque(x);
-        x.removeFirst();
-        x.removeFirst();
-        x.removeFirst();
-        x.removeFirst();
-        x.removeFirst();
-        x.removeFirst();
-        x.removeFirst();
-        x.removeFirst();
+        x.addFirst(5);
+        x.addFirst(6);
+        x.addLast(7);
+        x.removeLast()    ;
+        x.removeLast()    ;
+        x.removeLast()     ;
+        x.addLast(11);
+        x.removeLast()     ;
+        x.removeFirst()    ;
+        x.addFirst(14);
+        x.get(0)    ;
+        x.removeFirst()  ;
+        x.addLast(17);
         x.get(0);
 
-//        ArrayDeque<Integer> s = new ArrayDeque<>();
+//        x<Integer> s = new x<>();
 //        int i = 15;
 //        while (i > 8) {
 //            s.addFirst(0);
