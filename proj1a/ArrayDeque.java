@@ -50,7 +50,7 @@ public class ArrayDeque<T> {
         T[] newList;
         double percentage = 100.0 * size / length;
         if (length > 16 && percentage < 30) {
-            length = size + 1;
+            length = size * 2;
             newList = (T []) new Object[length];
             for (int i = 0; i < size; i = updateFirst(i, true)) {
                 newList[i] = get(i);
