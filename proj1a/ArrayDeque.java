@@ -90,21 +90,28 @@ public class ArrayDeque<T> {
     }
 
     public ArrayDeque(ArrayDeque other) {
-        storage = (T []) new Object[other.size];
-        first = other.first;
-        last = other.last;
+        storage = (T []) new Object[other.length];
+        first = other.length - 1;
+        last = other.size;
         size = other.size;
         length = other.length;
-        System.arraycopy(other.storage, 0, storage, 0, size);
+        for (int i = 0; i != last; i = updateFirst(i, true)) {
+            storage[i] = (T) other.get(i);
+        }
     }
 
+    /** Adds an object to the first position of the array */
     public void addFirst(T object) {
         resize();
         storage[first] = object;
-        size += 1;
         first = updateFirst(first, false);
+        size += 1;
     }
 
+    /** Adds an object to the last position of the array. If the array is empty,
+     * it adds an object to the zero position of the array
+     * @param object
+     */
     public void addLast(T object) {
         resize();
         if (size == 0) {
@@ -120,31 +127,29 @@ public class ArrayDeque<T> {
 
     public T removeFirst() {
         T result;
-        resize();
         if (size == 0) {
             return null;
-        } else if (first == storage.length - 1) {
-            first = updateFirst(first, true);
-            result = storage[first];
-            storage[first] = null;
         } else {
             first = updateFirst(first, true);
             result = storage[first];
             storage[first] = null;
         }
         size -= 1;
+        resize();
         return result;
     }
 
     public T removeLast() {
-        resize();
+        T result;
         if (size == 0) {
             return null;
+        } else {
+            last = updateLast(last, false);
+            result = storage[last];
+            storage[last] = null;
         }
-        last = updateLast(last, false);
-        T result = storage[last];
-        storage[last] = null;
         size -= 1;
+        resize();
         return result;
     }
 
@@ -161,7 +166,7 @@ public class ArrayDeque<T> {
 
     public void printDeque() {
         int pFirst = updateFirst(first, true);
-        while (storage[pFirst ] != null) {
+        while (storage[pFirst] != null) {
             System.out.print(storage[pFirst] + " ");
             pFirst = updateFirst(pFirst, true);
         }

@@ -122,27 +122,38 @@ public class LinkedListDequeTest {
         x.addFirst(2);
         x.addFirst(3);
         x.addLast(4);
+        x.addLast(4);
+        x.addLast(4);
+        new ArrayDeque(x);
+        x.removeFirst();
+        x.removeFirst();
+        x.removeFirst();
+        x.removeFirst();
+        x.removeFirst();
+        x.removeFirst();
+        x.removeFirst();
+        x.removeFirst();
         x.get(0);
 
-        ArrayDeque<Integer> s = new ArrayDeque<>();
-        int i = 15;
-        while (i > 8) {
-            s.addFirst(0);
-            i -= 1;
-        }
-        while (i > -4) {
-            s.addLast(0);
-            i -= 1;
-        }
-        s.removeLast();
-        while (i > -10) {
-            s.removeLast();
-            i += -1;
-        }
-        while (i > -16) {
-            s.removeLast();
-            i += -1;
-        }
+//        ArrayDeque<Integer> s = new ArrayDeque<>();
+//        int i = 15;
+//        while (i > 8) {
+//            s.addFirst(0);
+//            i -= 1;
+//        }
+//        while (i > -4) {
+//            s.addLast(0);
+//            i -= 1;
+//        }
+//        s.removeLast();
+//        while (i > -10) {
+//            s.removeLast();
+//            i += -1;
+//        }
+//        while (i > -16) {
+//            s.removeLast();
+//            i += -1;
+//        }
 
 //
 //        l1.addFirst(1);
