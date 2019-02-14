@@ -4,27 +4,27 @@ ArrayDeque:
 
 Q: Give an example of at least one idea from the staff solution that would have made your solution better (if any).
 
-A: 
+A: The WrapAround and resize functions don't implement any if clauses and instead uses the length of the list and math to loop and resize. I think if I did that, my code would've been better. 
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A: I am proud of my resize function, even though its nonlinear and inefficient. It took a lot of thought and implemenents what its supposed to clearly and well. 
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: The helper methods, resize and update methods, I felt were very inelegant. I didn't think about how to make these methods efficient or sleek but basically brute-forced them to work. I particularly dislike the nested if statements in these functions. Overall, I disliked how I made my arraydeque extremely over-complicated.
 
 Q: What did you learn by talking to your partner about writing ArrayDeque?
 
-A:
+A: 
 
 Q: What do you wish you would have known before writing ArrayDeque, if anything?
 
-A:
+A: I wish I would have known that resizing and looping the ArrayDeque is easier than I thought. 
 
 Q: If you wrote ArrayDeque again, what would you do differently, if anything?
 
-A:
+A: I would do everything differently. I made my code overly complicated and looking at the code presented in lab, it could have been much slimmer if I thought about the design before I wrote it. 
 
 -----
 
@@ -36,23 +36,23 @@ A:
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A: I feel proud that my code is similar to the code from the staff solution.
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: I feel that my getRecursive method is somewhat inelegeant and could've been implemented better. 
 
 Q: What did you learn by talking to your partner about writing LinkedListDeque?
 
-A:
+A: I learned about keeping another pointer in the list to make the get method more efficient. 
 
 Q: What do you wish you would have known before writing LinkedListDeque, if anything?
 
-A:
+A: 
 
 Q: If you wrote LinkedListDeque again, what would you do differently, if anything?
 
-A:
+A: Maybe redo my remove methods and getRecursive methods. 
 
 -----
 
@@ -60,4 +60,4 @@ Meta:
 
 Q: Did you like this design review process? Anything we should do differently next time?
 
-A: 
+A: I liked it. Maybe delve deeper into why the code was written that way.
