@@ -25,11 +25,11 @@ public class Palindrome {
         return check(A);
     }
 
-    private boolean offByOneCheck(Deque<Character> word, CharacterComparator cc) {
+    private boolean offByCheck(Deque<Character> word, CharacterComparator cc) {
         if (word.size() <= 1) {
             return true;
         } else if (cc.equalChars(word.removeFirst(), word.removeLast())) {
-            return offByOneCheck(word, cc);
+            return offByCheck(word, cc);
         }
         return false;
 
@@ -40,6 +40,6 @@ public class Palindrome {
             return false;
         }
         Deque<Character> A = wordToDeque(word);
-        return isPalindrome(word) || offByOneCheck(A, cc);
+        return offByCheck(A, cc);
     }
 }

@@ -2,13 +2,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestOffByN {
+    static Palindrome palindrome = new Palindrome();
     OffByN offBy0 = new OffByN(0);
     OffByN offBy1 = new OffByN(1);
     OffByN offBy5 = new OffByN(5);
     OffByN offBy6 = new OffByN(6);
 
     @Test
-    public void test() {
+    public void testNChar() {
         assertTrue(offBy0.equalChars('b', 'b'));
         assertFalse(offBy0.equalChars('a', 'c'));
 
@@ -26,5 +27,12 @@ public class TestOffByN {
         assertTrue(offBy6.equalChars('i', 'c'));
         assertFalse(offBy6.equalChars('a', 'z'));
         assertFalse(offBy6.equalChars('d', 'd'));
+    }
+
+    @Test
+    public void testNPalindrome() {
+        assertFalse(palindrome.isPalindrome("aba", offBy5));
+        assertTrue(palindrome.isPalindrome("abf", offBy5));
+        assertTrue(palindrome.isPalindrome("abcdihgf", offBy5));
     }
 }
