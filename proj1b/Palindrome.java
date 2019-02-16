@@ -10,8 +10,7 @@ public class Palindrome {
     private boolean check(Deque<Character> word) {
         if (word.size() <= 1) {
             return true;
-        }
-        else if (word.removeFirst() == word.removeLast()) {
+        } else if (word.removeFirst() == word.removeLast()) {
             return check(word);
         }
         return false;
