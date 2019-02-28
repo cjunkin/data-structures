@@ -44,8 +44,8 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
         fillCount = 0;
     }
 
-    public BufferIterator iterator() {
-        return new BufferIterator<T>();
+    public Iterator<T> iterator() {
+        return new BufferIterator<>();
     }
 
     @Override
@@ -58,8 +58,8 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
             if (other.isEmpty() && isEmpty()) {
                 return true;
             }
-            BufferIterator otheriter = other.iterator();
-            BufferIterator current = iterator();
+            Iterator otheriter = other.iterator();
+            Iterator current = iterator();
             while (current.hasNext() || otheriter.hasNext()) {
                 if (current.next() != otheriter.next()) {
                     return false;

@@ -13,7 +13,7 @@ public class GuitarString {
     /* Create a guitar string of the given frequency.  */
     public GuitarString(double frequency) {
         buffer = new ArrayRingBuffer<>((int) Math.round(SR / frequency));
-        while(buffer.fillCount() < buffer.capacity()) {
+        while (buffer.fillCount() < buffer.capacity()) {
             buffer.enqueue(0.0);
         }
     }
@@ -21,10 +21,10 @@ public class GuitarString {
 
     /* Pluck the guitar string by replacing the buffer with white noise. */
     public void pluck() {
-        while(buffer.fillCount() > 0) {
+        while (buffer.fillCount() > 0) {
             buffer.dequeue();
         }
-        while(buffer.fillCount() < buffer.capacity()) {
+        while (buffer.fillCount() < buffer.capacity()) {
             buffer.enqueue(Math.random() - 0.5);
         }
     }
