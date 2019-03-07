@@ -4,10 +4,11 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    private WeightedQuickUnionUF grid; // A disjoint set of the members of the grid of the simulation
-    private boolean[] openSites;
-    private int top;
-    private int bottom;
+    private WeightedQuickUnionUF grid; // A disjoint set of members of grid
+    private WeightedQuickUnionUF backwash;
+    private boolean[] openSites; // Number of open sites
+    private int top; // Index of top virtual root site
+    private int bottom; // Index of bottom virtual root site
     private int numberOpen; // Keeps track of the number of open sites
     private int dimension; // Stores the number of elements in the row of the system
 
@@ -41,19 +42,23 @@ public class Percolation {
         }
     }
 
-    /* create N-by-N grid, with all sites initially blocked and a virtual top and bottom */
+    /* create N-by-N grid, with all sites initially blocked and a virtual top and bottom
+    * @source got help with backwash implementation from piazza
+    * */
     public Percolation(int N) {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException("N should be greater than 0");
         }
         int virtual = N + 2;
         grid = new WeightedQuickUnionUF(virtual * N);
+        backwash = new WeightedQuickUnionUF(N + 1 * N);
         openSites = new boolean[virtual * N];
         numberOpen = 0;
         dimension = N;
         createVirtual();
     }
 
+    /* Checks if sites around input site are open and connects them */
     private void checkNeighbor(int row, int col) {
         int i = convert(row, col);
         int up = i - dimension;
@@ -98,7 +103,7 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         validate(row, col);
         int i = convert(row, col);
-        return grid.find(i) == top;
+        return grid.connected(top, i);
     }
 
     /* returns the number of open sites */
@@ -108,18 +113,25 @@ public class Percolation {
 
     /* returns if the system percolates or not */
     public boolean percolates() {
-        return grid.find(bottom) == top;
+        return grid.connected(top, bottom);
     }
 
     // tests
     public static void main(String[] args) {
-        Percolation sim = new Percolation(5);
-        sim.open(0, 1);
+        int N = 5;
+        Percolation sim = new Percolation(N);
+//        for (int i = 0; i < N; i++) {
+//            sim.open(i, 3);
+//        }
         sim.open(1, 1);
         sim.open(2, 1);
         sim.open(3, 1);
-        sim.open(4, 1);
-        if (sim.isFull(3, 1)) {
+        sim.open(3, 2);
+        sim.open(3, 3);
+        sim.open(2, 3);
+        sim.open(1, 3);
+        sim.open(0, 3);
+        if (sim.isFull(5, 3)) {
             System.out.println("is full");
         }
         if (sim.percolates()) {
