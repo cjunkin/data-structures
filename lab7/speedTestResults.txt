@@ -1,0 +1,17 @@
+InsertInOrder (BST):
+
+# strings, time
+
+10, 0.0s (0.0 ULL)
+1000, 0.83s (0.95s ULL)
+
+InsertRandom (BST):
+length of strings: 5
+
+# strings, time
+
+10 - 1000, 0.0s
+10000, 0.01s
+100000 0.1s
+
+Hashmaps and Treemaps are always faster than our BSTMaps
