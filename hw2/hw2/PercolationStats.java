@@ -21,8 +21,12 @@ public class PercolationStats {
             Percolation sim = pf.make(N);
             double sites = 0;
             while (!sim.percolates()) {
-                sim.open(StdRandom.uniform(N), StdRandom.uniform(N));
-                sites++;
+                int x = StdRandom.uniform(N);
+                int y = StdRandom.uniform(N);
+                if (!sim.isOpen(x, y)) {
+                    sim.open(x, y);
+                    sites++;
+                }
             }
             data[i] = sites / (N * N);
         }
@@ -48,8 +52,11 @@ public class PercolationStats {
         return (mean() + 1.96 * stddev()) / Math.sqrt(experiments);
     }
 
-    public static void main(String[] args) {
-        PercolationStats test = new PercolationStats(10, 20, new PercolationFactory());
-        System.out.print(test.mean());
-    }
+//    public static void main(String[] args) {
+//        PercolationStats test = new PercolationStats(20, 10, new PercolationFactory());
+//        System.out.println(test.mean());
+//        System.out.println(test.stddev());
+//        System.out.println(test.confidenceHigh());
+//        System.out.println(test.confidenceLow());
+//    }
 }

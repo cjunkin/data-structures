@@ -75,11 +75,11 @@ public class Percolation {
             grid.union(i, down);
             backwash.union(i, down);
         }
-        if (openSites[left]) {
+        if ((openSites[left]) && (i % dimension != 0)) {
             grid.union(i, left);
             backwash.union(i, left);
         }
-        if (openSites[right]) {
+        if ((openSites[right]) && (right % dimension != 0)) {
             grid.union(i, right);
             backwash.union(i, right);
         }
@@ -125,9 +125,6 @@ public class Percolation {
     public static void main(String[] args) {
         int N = 5;
         Percolation sim = new Percolation(N);
-//        for (int i = 0; i < N; i++) {
-//            sim.open(i, 3);
-//        }
         sim.open(1, 1);
         sim.open(2, 1);
         sim.open(3, 1);
