@@ -24,7 +24,7 @@ public class PercolationStats {
                 sim.open(StdRandom.uniform(N), StdRandom.uniform(N));
                 sites++;
             }
-            data[i] = sites / N;
+            data[i] = sites / (N * N);
         }
     }
 
@@ -46,5 +46,10 @@ public class PercolationStats {
     // high endpoint of 95% confidence interval
     public double confidenceHigh() {
         return (mean() + 1.96 * stddev()) / Math.sqrt(experiments);
+    }
+
+    public static void main(String[] args) {
+        PercolationStats test = new PercolationStats(10, 20, new PercolationFactory());
+        System.out.print(test.mean());
     }
 }

@@ -32,6 +32,7 @@ public class Percolation {
         openSites[top] = true;
         for (int i = top; i < dimension - 1; i++) {
             grid.union(i, i + 1);
+            backwash.union(i, i + 1);
             openSites[i + 1] = true;
         }
         bottom = dimension * dimension + dimension;
@@ -51,7 +52,7 @@ public class Percolation {
         }
         int virtual = N + 2;
         grid = new WeightedQuickUnionUF(virtual * N);
-        backwash = new WeightedQuickUnionUF(N + 1 * N);
+        backwash = new WeightedQuickUnionUF(virtual * N);
         openSites = new boolean[virtual * N];
         numberOpen = 0;
         dimension = N;
@@ -68,15 +69,19 @@ public class Percolation {
 
         if (openSites[up]) {
             grid.union(i, up);
+            backwash.union(i, up);
         }
         if (openSites[down]) {
             grid.union(i, down);
+            backwash.union(i, down);
         }
         if (openSites[left]) {
             grid.union(i, left);
+            backwash.union(i, left);
         }
         if (openSites[right]) {
             grid.union(i, right);
+            backwash.union(i, right);
         }
     }
 
@@ -103,7 +108,7 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         validate(row, col);
         int i = convert(row, col);
-        return grid.connected(top, i);
+        return backwash.connected(i, top);
     }
 
     /* returns the number of open sites */
@@ -131,7 +136,7 @@ public class Percolation {
         sim.open(2, 3);
         sim.open(1, 3);
         sim.open(0, 3);
-        if (sim.isFull(5, 3)) {
+        if (sim.isFull(3, 3)) {
             System.out.println("is full");
         }
         if (sim.percolates()) {
