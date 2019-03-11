@@ -26,8 +26,7 @@ public class SimpleOomage implements Oomage {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-            // TODO: Write a perfect hash function for Simple Oomages.
-            return 3 * red - 7 * green + 2 * blue;
+            return (int) Math.round(2.34 * 1.0 * red - 4.12 * green + 3.57 * blue);
         }
     }
 
@@ -38,9 +37,9 @@ public class SimpleOomage implements Oomage {
         if ((r % 5 != 0) || (g % 5 != 0) || (b % 5 != 0)) {
             throw new IllegalArgumentException("red/green/blue values must all be multiples of 5!");
         }
-        red = r;
-        green = g;
-        blue = b;
+        red = r / 5;
+        green = g / 5;
+        blue = b / 5;
     }
 
     @Override
