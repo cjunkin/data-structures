@@ -26,7 +26,7 @@ public class SimpleOomage implements Oomage {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-            return (int) Math.round((2.34 * red) % 6 + (4.12 * green) % 7 + (3.57 * blue) % 13);
+            return (int) Math.round((2.34 * red) % 6 + (40.12 * green) % 7 + (3049.57 * blue));
         }
     }
 
