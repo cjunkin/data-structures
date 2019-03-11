@@ -40,7 +40,7 @@ public class TestComplexOomage {
 
         int x = 1;
         for (int i = 0; i < 10; i += 1) {
-            deadlyList.add();
+            deadlyList.add(ComplexOomage.randomComplexOomage());
             x = x * 256;
         }
 
