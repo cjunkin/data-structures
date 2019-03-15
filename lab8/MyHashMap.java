@@ -26,7 +26,21 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     private class HashIterator implements Iterator<K> {
+        Iterator<K> iter;
 
+        HashIterator() {
+            iter = keys.iterator();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return iter.hasNext();
+        }
+
+        @Override
+        public K next() {
+            return iter.next();
+        }
     }
 
     public MyHashMap() {
@@ -107,7 +121,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             table.add(hash, new Entry(key, value));
         } else {
             Entry storage = table.get(hash);
-            storage.add(new Entry(key, value));
+            if (storage.contains(key)) {
+
+            } else {
+                storage.add(new Entry(key, value));
+            }
         }
         size++;
     }
