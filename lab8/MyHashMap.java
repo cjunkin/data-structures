@@ -9,7 +9,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private ArrayList<Entry> table;
     private Set<K> keys;
 
-    private class Entry extends LinkedList {
+    private class Entry {
         K key;
         V value;
         Entry next;
@@ -95,10 +95,16 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (key != null && containsKey(key)) {
             int hash = key.hashCode() % capacity;
             Entry position = table.get(hash);
-
-        } else {
-            return null;
+            return get(key, position);
         }
+        return null;
+    }
+
+    private V get(K key, Entry n) {
+        if (n.key.equals(key)) {
+            return n.value;
+        }
+        return get(key, n.next);
     }
 
     /** Returns the number of key-value mappings in this map. */
@@ -114,20 +120,20 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void put(K key, V value) {
         if (key == null || value == null || table == null) {
             return;
+        } else if (table.isEmpty()) {
+            initialize();
         }
         validate();
         int hash = key.hashCode() % capacity;
-        if (table.get(hash) == null) {
-            table.add(hash, new Entry(key, value));
-        } else {
-            Entry storage = table.get(hash);
-            if (storage.contains(key)) {
-
-            } else {
-                storage.add(new Entry(key, value));
-            }
-        }
+        table.set(hash, new Entry(key, value, table.get(hash)));
+        keys.add(key);
         size++;
+    }
+
+    private void initialize() {
+        for (int i = 0; i < capacity; i++) {
+            table.add(i, null);
+        }
     }
 
     /** Returns a Set view of the keys contained in this map. */
