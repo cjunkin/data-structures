@@ -82,7 +82,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         heap.set(1, heap.remove(current));
         items.remove(ret.item());
         current--;
-        validate(current);
+        validateFromBottom(1);
         return ret.item();
     }
 
@@ -91,12 +91,12 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         return heap.size() - 1;
     }
 
-    private void validatePriority(int pointer) {
+    private void validateFromBottom(int pointer) {
         if (pointer * 2 + 1 < current) {
-            validatePriority(pointer * 2 + 1);
-            validatePriority(pointer * 2);
+            validateFromBottom(pointer * 2 + 1);
+            validateFromBottom(pointer * 2);
         } else if (pointer * 2 < current) {
-            validatePriority(pointer * 2);
+            validateFromBottom(pointer * 2);
         } else {
             validate(pointer);
         }
@@ -107,7 +107,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (contains(item)) {
             int i = items.get(item);
             heap.get(i).priority = priority;
-            validatePriority(i);
+            validateFromBottom(i);
             return;
         } else {
             throw new NoSuchElementException("item does not exist in heap");
