@@ -46,11 +46,23 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         heap.add(new Node(item, priority));
         current++;
         items.put(item, current);
-        validate(current);
+        validateUp(current);
     }
 
-    /* Checks if node priority is smaller than parent node */
     private void validate(int pointer) {
+        Node parentNode = heap.get(pointer / 2);
+        Node pointerNode = heap.get(pointer);
+        int parentIndicator = pointerNode.compareTo(parentNode);
+        if (parentNode.item() == null) {
+            return;
+        } else if (parentIndicator < 0) {
+            validateUp(pointer);
+        } else {
+            validateBottom(pointer);
+        }
+    }
+
+    private void validateUp(int pointer) {
         Node parentNode = heap.get(pointer / 2);
         Node pointerNode = heap.get(pointer);
         int indicator = pointerNode.compareTo(parentNode);
@@ -62,7 +74,37 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             items.put(pointerNode.item, pointer / 2);
             items.put(parentNode.item, pointer);
         }
-        validate(pointer / 2);
+        validateUp(pointer / 2);
+    }
+
+    private void validateBottom(int pointer) {
+        Node pointerNode = heap.get(pointer);
+        if (pointer * 2 + 1 > current && pointer * 2 > current) {
+            return;
+        } else if (pointer * 2 == current) {
+            validateUp(pointer * 2);
+            return;
+        }
+        Node child1 = heap.get(pointer * 2);
+        Node child2 = heap.get(pointer * 2 + 1);
+        boolean which = child1.priority < child2.priority;
+        int childIndicator1 = child1.compareTo(pointerNode);
+        int childIndicator2 = child2.compareTo(pointerNode);
+        if (childIndicator1 < 0 && which) {
+            Bottom(pointer, pointer * 2);
+        } else if (childIndicator2 < 0 && !which) {
+            Bottom(pointer, pointer * 2 + 1);
+        }
+    }
+
+    private void Bottom(int pointer, int child) {
+        Node pointerNode = heap.get(pointer);
+        Node childNode = heap.get(child);
+        heap.set(child, pointerNode);
+        heap.set(pointer, childNode);
+        items.put(pointerNode.item, child);
+        items.put(childNode.item, pointer);
+        validateBottom(child);
     }
 
     @Override
@@ -82,7 +124,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         heap.set(1, heap.remove(current));
         items.remove(ret.item());
         current--;
-        validateFromBottom(1);
+        validateBottom(1);
         return ret.item();
     }
 
@@ -91,24 +133,12 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         return heap.size() - 1;
     }
 
-    private void validateFromBottom(int pointer) {
-        if (pointer * 2 + 1 < current) {
-            validateFromBottom(pointer * 2 + 1);
-            validateFromBottom(pointer * 2);
-        } else if (pointer * 2 < current) {
-            validateFromBottom(pointer * 2);
-        } else {
-            validate(pointer);
-        }
-    }
-
     @Override
     public void changePriority(T item, double priority) {
         if (contains(item)) {
             int i = items.get(item);
             heap.get(i).priority = priority;
-            validateFromBottom(i);
-            return;
+            validate(i);
         } else {
             throw new NoSuchElementException("item does not exist in heap");
         }

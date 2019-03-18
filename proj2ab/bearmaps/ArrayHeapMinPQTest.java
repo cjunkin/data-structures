@@ -7,6 +7,80 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ArrayHeapMinPQTest {
+    @Test
+    public void testTiming() {
+        Stopwatch basic2 = new Stopwatch();
+        ArrayHeapMinPQ<Integer> test2 = new ArrayHeapMinPQ<>();
+        for (int i = 0; i < 1000; i++) {
+            test2.add(i, i);
+        }
+        System.out.println("Total time elapsed: " + basic2.elapsedTime() +  " seconds.");
+
+        Stopwatch basic3 = new Stopwatch();
+        ArrayHeapMinPQ<Integer> test3 = new ArrayHeapMinPQ<>();
+        for (int i = 0; i < 100000; i++) {
+            test3.add(i, i);
+        }
+        System.out.println("Total time elapsed: " + basic3.elapsedTime() +  " seconds.");
+
+        Stopwatch bigAdd = new Stopwatch();
+        ArrayHeapMinPQ<Integer> big = new ArrayHeapMinPQ<>();
+        for (int i = 0; i < 1000000; i++) {
+            big.add(i, i);
+        }
+        System.out.println("million add time: " + bigAdd.elapsedTime() +  " seconds.");
+
+        Stopwatch naive = new Stopwatch();
+        NaiveMinPQ<Integer> gross = new NaiveMinPQ<>();
+        for (int i = 0; i < 1000000; i++) {
+            gross.add(i, i);
+        }
+        System.out.println("Naive time elapsed: " + naive.elapsedTime() +  " seconds.");
+
+        Stopwatch naiveTime = new Stopwatch();
+        for (int i = 0; i < 1000; i++) {
+            gross.removeSmallest();
+        }
+        System.out.println("Naive remove time elapsed: " + naiveTime.elapsedTime() +  " seconds.");
+
+        Stopwatch bigAddTime = new Stopwatch();
+        for (int i = 0; i < 1000; i++) {
+            big.removeSmallest();
+        }
+        System.out.println("Big remove time elapsed: " + bigAddTime.elapsedTime() +  " seconds.");
+
+
+        Stopwatch remove = new Stopwatch();
+        test3.removeSmallest();
+        System.out.println("Remove time elapsed: " + remove.elapsedTime() +  " seconds.");
+
+        ArrayHeapMinPQ<Integer> test4 = new ArrayHeapMinPQ<>();
+        for (int i = 0; i < 1000000; i++) {
+            test4.add(i, i);
+        }
+
+        Stopwatch remove2 = new Stopwatch();
+        test4.removeSmallest();
+        System.out.println("Remove2 time elapsed: " + remove2.elapsedTime() +  " seconds.");
+
+
+        Stopwatch contain = new Stopwatch();
+        test3.contains(5000);
+        System.out.println("Contains time elapsed: " + contain.elapsedTime() +  " seconds.");
+
+        Stopwatch contain2 = new Stopwatch();
+        test4.contains(500000);
+        System.out.println("Contains2 time elapsed: " + contain2.elapsedTime() +  " seconds.");
+
+
+        Stopwatch priority1 = new Stopwatch();
+        test3.changePriority(50000, 0);
+        System.out.println("Priority1 time elapsed: " + priority1.elapsedTime() +  " seconds.");
+
+        Stopwatch priority2 = new Stopwatch();
+        test4.changePriority(500000, -1);
+        System.out.println("Priority2 time elapsed: " + priority2.elapsedTime() +  " seconds.");
+    }
 
     @Test
     public void testBasic() {
@@ -70,6 +144,10 @@ public class ArrayHeapMinPQTest {
         assertEquals((Integer) 4, test.getSmallest());
         assertTrue(test.contains(8));
         assertTrue(test.contains(7));
+
+        test.changePriority(8, -10);
+        test.removeSmallest();
+        test.changePriority(5, -10);
     }
 
     @Test
@@ -84,89 +162,6 @@ public class ArrayHeapMinPQTest {
         test.removeSmallest();
         assertEquals((Integer) 1, test.getSmallest());
         assertEquals(4, test.size());
-    }
-
-    @Test
-    public void testTiming() {
-        Stopwatch basic1 = new Stopwatch();
-        ArrayHeapMinPQ<Integer> test1 = new ArrayHeapMinPQ<>();
-        for (int i = 0; i < 10; i++) {
-            test1.add(i, i);
-        }
-        System.out.println("Total time elapsed: " + basic1.elapsedTime() +  " seconds.");
-
-        Stopwatch basic2 = new Stopwatch();
-        ArrayHeapMinPQ<Integer> test2 = new ArrayHeapMinPQ<>();
-        for (int i = 0; i < 1000; i++) {
-            test2.add(i, i);
-        }
-        System.out.println("Total time elapsed: " + basic2.elapsedTime() +  " seconds.");
-
-        Stopwatch basic3 = new Stopwatch();
-        ArrayHeapMinPQ<Integer> test3 = new ArrayHeapMinPQ<>();
-        for (int i = 0; i < 100000; i++) {
-            test3.add(i, i);
-        }
-        System.out.println("Total time elapsed: " + basic3.elapsedTime() +  " seconds.");
-
-        Stopwatch bigAdd = new Stopwatch();
-        ArrayHeapMinPQ<Integer> big = new ArrayHeapMinPQ<>();
-        for (int i = 0; i < 1000000; i++) {
-            big.add(i, i);
-        }
-        System.out.println("A million add functions time elapsed: " + bigAdd.elapsedTime() +  " seconds.");
-
-        Stopwatch naive = new Stopwatch();
-        NaiveMinPQ<Integer> gross = new NaiveMinPQ<>();
-        for (int i = 0; i < 1000000; i++) {
-            gross.add(i, i);
-        }
-        System.out.println("Naive time elapsed: " + naive.elapsedTime() +  " seconds.");
-
-        Stopwatch naiveTime = new Stopwatch();
-        for (int i = 0; i < 1000; i++) {
-            gross.removeSmallest();
-        }
-        System.out.println("Naive remove time elapsed: " + naiveTime.elapsedTime() +  " seconds.");
-
-        Stopwatch bigAddTime = new Stopwatch();
-        for (int i = 0; i < 1000; i++) {
-            big.removeSmallest();
-        }
-        System.out.println("Big remove time elapsed: " + bigAddTime.elapsedTime() +  " seconds.");
-
-
-        Stopwatch remove = new Stopwatch();
-        test3.removeSmallest();
-        System.out.println("Remove time elapsed: " + remove.elapsedTime() +  " seconds.");
-
-        ArrayHeapMinPQ<Integer> test4 = new ArrayHeapMinPQ<>();
-        for (int i = 0; i < 1000000; i++) {
-            test4.add(i, i);
-        }
-
-        Stopwatch remove2 = new Stopwatch();
-        test4.removeSmallest();
-        System.out.println("Remove2 time elapsed: " + remove2.elapsedTime() +  " seconds.");
-
-
-        Stopwatch contain = new Stopwatch();
-        test3.contains(5000);
-        System.out.println("Contains time elapsed: " + contain.elapsedTime() +  " seconds.");
-
-        Stopwatch contain2 = new Stopwatch();
-        test4.contains(500000);
-        System.out.println("Contains2 time elapsed: " + contain2.elapsedTime() +  " seconds.");
-
-
-        Stopwatch priority1 = new Stopwatch();
-        test3.changePriority(50000, 0);
-        System.out.println("Priority1 time elapsed: " + priority1.elapsedTime() +  " seconds.");
-
-        Stopwatch priority2 = new Stopwatch();
-        test4.changePriority(500000, -1);
-        System.out.println("Priority2 time elapsed: " + priority2.elapsedTime() +  " seconds.");
-        assertEquals((Integer) 500000, test4.getSmallest());
     }
 
     @Test
@@ -215,7 +210,7 @@ public class ArrayHeapMinPQTest {
         System.out.println("10000 time elapsed: " + stop3.elapsedTime() +  " seconds.");
 
         Stopwatch stop4 = new Stopwatch();
-        for (int i = -1; i> -10000; i--) {
+        for (int i = -1; i > -10000; i--) {
             test4.add(i, i);
         }
         System.out.println("100000 time elapsed: " + stop4.elapsedTime() +  " seconds.");
