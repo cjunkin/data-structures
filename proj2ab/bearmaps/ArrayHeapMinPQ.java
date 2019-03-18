@@ -91,13 +91,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         int childIndicator1 = child1.compareTo(pointerNode);
         int childIndicator2 = child2.compareTo(pointerNode);
         if (childIndicator1 < 0 && which) {
-            Bottom(pointer, pointer * 2);
+            bottom(pointer, pointer * 2);
         } else if (childIndicator2 < 0 && !which) {
-            Bottom(pointer, pointer * 2 + 1);
+            bottom(pointer, pointer * 2 + 1);
         }
     }
 
-    private void Bottom(int pointer, int child) {
+    private void bottom(int pointer, int child) {
         Node pointerNode = heap.get(pointer);
         Node childNode = heap.get(child);
         heap.set(child, pointerNode);
