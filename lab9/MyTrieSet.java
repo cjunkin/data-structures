@@ -82,10 +82,7 @@ public class MyTrieSet implements TrieSet61B {
             char c = prefix.charAt(i);
             curr = (Node) curr.map.get(c);
         }
-        for (Node i : curr.map) {
-            words("", i, words);
-        }
-
+        return null;
     }
 
     private String words(String temp, Node pntr, List<String> words) {
@@ -93,7 +90,7 @@ public class MyTrieSet implements TrieSet61B {
             return temp;
         }
         temp += pntr.character;
-        words(temp, );
+        return null;
     }
 
     /** Returns the longest prefix of KEY that exists in the Trie
