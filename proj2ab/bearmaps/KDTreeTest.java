@@ -69,8 +69,12 @@ public class KDTreeTest {
         for (int i = 0; i < 100000; i++) {
             test.add(new Point(Math.random(), Math.random()));
         }
+        Stopwatch kdc = new Stopwatch();
         KDTree kd = new KDTree(test);
+        System.out.println("KDTree constructor time: " + kdc.elapsedTime());
+        Stopwatch npsc = new Stopwatch();
         NaivePointSet nps = new NaivePointSet(test);
+        System.out.println("Naive constructor time: " + npsc.elapsedTime());
 
         Stopwatch kdTime = new Stopwatch();
         for (int i = 0; i < 10000; i++) {

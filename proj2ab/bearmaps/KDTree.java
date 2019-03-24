@@ -23,7 +23,6 @@ public class KDTree {
 
     public KDTree(List<Point> points) {
         root = new Node(points.get(0));
-        Node pointer = root;
         for (int i = 1; i < points.size(); i++) {
             add(points.get(i), root);
         }
