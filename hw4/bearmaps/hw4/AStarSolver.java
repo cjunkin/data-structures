@@ -31,15 +31,16 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         solution = new LinkedList<>();
         timeOut = timeout;
 
-        pq.add(start, -1000.0);
         disTo.put(start, 0.0);
-        edgeTo.put(start, start);
+        edgeTo.put(start, null);
+        pq.add(start, -1000.0);
         queue(input, start, end);
         time = sw.elapsedTime();
     }
 
     private void queue(AStarGraph<Vertex> input, Vertex start, Vertex end) {
         List<WeightedEdge<Vertex>> neighbors = input.neighbors(start);
+        int i = 1;
         for (WeightedEdge<Vertex> edge : neighbors) {
             Vertex v = edge.to();
             double storedDis = disTo.get(edge.from()) + edge.weight();
@@ -54,10 +55,14 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                 edgeTo.put(v, start);
             }
         }
-        relax(input, end);
+        start = relax(end);
+        if (start == null) {
+            return;
+        }
+        queue(input, start, end);
     }
 
-    private void relax(AStarGraph<Vertex> input, Vertex end) {
+    private Vertex relax(Vertex end) {
         Vertex v = pq.removeSmallest();
         marked.add(v);
         states += 1;
@@ -67,24 +72,23 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             outcome = SolverOutcome.TIMEOUT;
             weight = 0;
             solution.clear();
-            return;
+            return null;
         } else if (v.equals(end)) {
             weight = disTo.get(end);
-            while (!v.equals(edgeTo.get(v))) {
+            while (edgeTo.get(v) != null) {
                 solution.addFirst(v);
                 v = edgeTo.get(v);
             }
             solution.addFirst(v);
             outcome = SolverOutcome.SOLVED;
-            return;
+            return null;
         } else if (pq.size() == 0) {
             outcome = SolverOutcome.UNSOLVABLE;
             weight = 0;
             solution.clear();
-            return;
+            return null;
         }
-
-        queue(input, v, end);
+        return v;
     }
 
     public SolverOutcome outcome() {
