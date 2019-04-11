@@ -26,8 +26,8 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         solution = new ArrayList<>();
         timeOut = timeout;
 
+        pq.add(start, 0.0);
         disTo.put(start, 0.0);
-        solution.add(start);
         queue(input, start, end);
         time = sw.elapsedTime();
     }
@@ -41,7 +41,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             if (pq.contains(v) && storedDis < disTo.get(v)) {
                 pq.changePriority(v, dis);
                 disTo.put(v, storedDis);
-            } else if (!pq.contains(v)){
+            } else if (!pq.contains(v) && !solution.contains(v)){
                 pq.add(v, dis);
                 disTo.put(v, storedDis);
             }
@@ -57,7 +57,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         if (time > timeOut) {
             outcome = SolverOutcome.TIMEOUT;
             weight = 0;
-            solution = null;
+            solution.clear();
             return;
         } else if (v.equals(end)) {
             solution.add(v);
@@ -67,7 +67,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         } else if (pq.size() == 0) {
             outcome = SolverOutcome.UNSOLVABLE;
             weight = 0;
-            solution = null;
+            solution.clear();
             return;
         }
 
