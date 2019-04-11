@@ -2,7 +2,11 @@ package bearmaps.hw4;
 import bearmaps.proj2ab.DoubleMapPQ;
 import edu.princeton.cs.algs4.Stopwatch;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private DoubleMapPQ<Vertex> pq = new DoubleMapPQ<>();
