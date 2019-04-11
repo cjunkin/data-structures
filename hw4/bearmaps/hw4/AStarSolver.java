@@ -41,7 +41,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             if (pq.contains(v) && storedDis < disTo.get(v)) {
                 pq.changePriority(v, dis);
                 disTo.put(v, storedDis);
-            } else if (!pq.contains(v) && !solution.contains(v)){
+            } else if (!pq.contains(v) && !solution.contains(v)) {
                 pq.add(v, dis);
                 disTo.put(v, storedDis);
             }
@@ -64,7 +64,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
             weight = disTo.get(end);
             outcome = SolverOutcome.SOLVED;
             return;
-        } else if (pq.size() == 0) {
+        } else if (pq.size() <= 0) {
             outcome = SolverOutcome.UNSOLVABLE;
             weight = 0;
             solution.clear();
