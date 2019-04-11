@@ -2,93 +2,73 @@ package bearmaps.hw4;
 import bearmaps.proj2ab.DoubleMapPQ;
 import edu.princeton.cs.algs4.Stopwatch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
-    private DoubleMapPQ<Vertex> pq;
-    private HashMap<Vertex, Double> disTo;
-    private HashMap<Vertex, Vertex> edgeTo;
-    private List<Vertex> marked;
+    private DoubleMapPQ<Vertex> pq = new DoubleMapPQ<>();
+    private HashMap<Vertex, Double> disTo = new HashMap<>();
+    private HashMap<Vertex, Vertex> edgeTo = new HashMap<>();
+    private HashSet<Vertex> marked = new HashSet<>();
 
-    private LinkedList<Vertex> solution;
+    private LinkedList<Vertex> solution = new LinkedList<>();
     private double weight;
     private SolverOutcome outcome;
     private int states;
-
-    private Stopwatch sw;
     private double time;
-    private double timeOut;
 
     public AStarSolver(AStarGraph<Vertex> input, Vertex start, Vertex end, double timeout) {
-        sw = new Stopwatch();
-        pq = new DoubleMapPQ<>();
-        marked = new ArrayList<>();
-        disTo = new HashMap<>();
-        edgeTo = new HashMap<>();
-        solution = new LinkedList<>();
-        timeOut = timeout;
-
+        Stopwatch sw = new Stopwatch();
         disTo.put(start, 0.0);
         edgeTo.put(start, null);
-        pq.add(start, -1000.0);
-        queue(input, start, end);
+        marked.add(start);
+        pq.add(start, 0.0);
+
+        while (pq.size() > 0) {
+            Vertex v = pq.removeSmallest();
+            time = sw.elapsedTime();
+            if (time > timeout) {
+                outcome = SolverOutcome.TIMEOUT;
+                weight = 0;
+                solution.clear();
+                return;
+            } else if (v.equals(end)) {
+                weight = disTo.get(end);
+                while (edgeTo.get(v) != null) {
+                    solution.addFirst(v);
+                    v = edgeTo.get(v);
+                }
+                solution.addFirst(v);
+                outcome = SolverOutcome.SOLVED;
+                return;
+            }
+
+            relax(input, v, end);
+        }
+
+        outcome = SolverOutcome.UNSOLVABLE;
+        weight = 0;
+        solution.clear();
         time = sw.elapsedTime();
     }
 
-    private void queue(AStarGraph<Vertex> input, Vertex start, Vertex end) {
+    private void relax(AStarGraph<Vertex> input, Vertex start, Vertex end) {
         List<WeightedEdge<Vertex>> neighbors = input.neighbors(start);
-        int i = 1;
         for (WeightedEdge<Vertex> edge : neighbors) {
             Vertex v = edge.to();
             double storedDis = disTo.get(edge.from()) + edge.weight();
-            double dis = storedDis + input.estimatedDistanceToGoal(v, end);
-            if (pq.contains(v) && storedDis < disTo.get(v)) {
-                pq.changePriority(v, dis);
+            double priority = storedDis + input.estimatedDistanceToGoal(v, end);
+            if (marked.contains(v) && storedDis < disTo.get(v)) {
+                pq.changePriority(v, priority);
                 disTo.put(v, storedDis);
                 edgeTo.put(v, start);
-            } else if (!pq.contains(v) && !marked.contains(v)) {
-                pq.add(v, dis);
+            } else if (!marked.contains(v)) {
+                pq.add(v, priority);
                 disTo.put(v, storedDis);
                 edgeTo.put(v, start);
+                marked.add(v);
             }
         }
-        start = relax(end);
-        if (start == null) {
-            return;
-        }
-        queue(input, start, end);
-    }
-
-    private Vertex relax(Vertex end) {
-        Vertex v = pq.removeSmallest();
-        marked.add(v);
         states += 1;
-        time = sw.elapsedTime();
-
-        if (time > timeOut) {
-            outcome = SolverOutcome.TIMEOUT;
-            weight = 0;
-            solution.clear();
-            return null;
-        } else if (v.equals(end)) {
-            weight = disTo.get(end);
-            while (edgeTo.get(v) != null) {
-                solution.addFirst(v);
-                v = edgeTo.get(v);
-            }
-            solution.addFirst(v);
-            outcome = SolverOutcome.SOLVED;
-            return null;
-        } else if (pq.size() == 0) {
-            outcome = SolverOutcome.UNSOLVABLE;
-            weight = 0;
-            solution.clear();
-            return null;
-        }
-        return v;
     }
 
     public SolverOutcome outcome() {
