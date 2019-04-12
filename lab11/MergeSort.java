@@ -91,7 +91,8 @@ public class MergeSort {
         Queue<Queue<Item>> queue = makeSingleItemQueues(items);
         Queue<Item> result = new Queue<>();
         while (!queue.isEmpty()) {
-            result = mergeSortedQueues(result, queue.dequeue());
+            result = mergeSortedQueues(mergeSortedQueues(result, queue.dequeue()),
+                    mergeSortedQueues(result, queue.dequeue()));
         }
         return result;
     }
