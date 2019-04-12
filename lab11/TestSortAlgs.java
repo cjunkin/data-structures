@@ -2,6 +2,10 @@ import edu.princeton.cs.algs4.Queue;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
+import static org.junit.Assert.assertTrue;
+
 public class TestSortAlgs {
 
     @Test
@@ -11,7 +15,13 @@ public class TestSortAlgs {
 
     @Test
     public void testMergeSort() {
-
+        Queue<String> test = new Queue<>();
+        test.enqueue("Chris");
+        test.enqueue("Kyle");
+        test.enqueue("Miles");
+        test.enqueue("Jonah");
+        test = MergeSort.mergeSort(test);
+        assertTrue(isSorted(test));
     }
 
     /**
