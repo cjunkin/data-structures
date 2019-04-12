@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.Queue;
 
+import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
 
 import java.util.Iterator;
@@ -20,7 +21,9 @@ public class TestSortAlgs {
         test.enqueue("Kyle");
         test.enqueue("Miles");
         test.enqueue("Jonah");
+        Stopwatch sw = new Stopwatch();
         test = MergeSort.mergeSort(test);
+        System.out.println(sw.elapsedTime() * 1000);
         assertTrue(isSorted(test));
     }
 
