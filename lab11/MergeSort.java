@@ -88,12 +88,15 @@ public class MergeSort {
         if (items.size() <= 1) {
             return items;
         }
-        Queue<Queue<Item>> queue = makeSingleItemQueues(items);
-        Queue<Item> result = new Queue<>();
-        while (!queue.isEmpty()) {
-            result = mergeSortedQueues(mergeSortedQueues(result, queue.dequeue()),
-                    mergeSortedQueues(result, queue.dequeue()));
+        Queue<Queue<Item>> temp = makeSingleItemQueues(items);
+        Queue<Item> first = new Queue<>();
+        Queue<Item> last = new Queue<>();
+        while (!temp.isEmpty()) {
+            first.enqueue(temp.dequeue().dequeue());
+            last.enqueue(temp.dequeue().dequeue());
         }
-        return result;
+        first = mergeSort(first);
+        last = mergeSort(last);
+        return mergeSortedQueues(first, last);
     }
 }
