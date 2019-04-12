@@ -21,6 +21,7 @@ public class TestSortAlgs {
         test.enqueue("Kyle");
         test.enqueue("Miles");
         test.enqueue("Jonah");
+        test.enqueue("Omkar");
         Stopwatch sw = new Stopwatch();
         test = MergeSort.mergeSort(test);
         System.out.println(sw.elapsedTime() * 1000);

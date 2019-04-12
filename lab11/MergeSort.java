@@ -94,6 +94,9 @@ public class MergeSort {
         while (!temp.isEmpty()) {
             first.enqueue(temp.dequeue().dequeue());
             last.enqueue(temp.dequeue().dequeue());
+            if (temp.size() == 1) {
+                first.enqueue(temp.dequeue().dequeue());
+            }
         }
         first = mergeSort(first);
         last = mergeSort(last);
