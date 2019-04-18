@@ -108,6 +108,10 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         Double ullat = params.get("ullat");
         if ((lrlon > ullon) || (lrlat > ullat)) {
             return false;
+        } else if ((lrlon > ROOT_LRLON) || (ullon < ROOT_ULLON)) {
+            return false;
+        } else if ((lrlat < ROOT_LRLAT) || (ullat > ROOT_ULLAT)) {
+            return false;
         }
         return true;
     }
@@ -136,13 +140,13 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
 
         double xTileEdge = Math.abs((ROOT_LRLON - ROOT_ULLON) / numTiles); // longitude per tile
         double yTileEdge = Math.abs((ROOT_ULLAT - ROOT_LRLAT) / numTiles); // latitude per tile
-        int queryLeftTiles = Math.abs((int) ((queryULLON - ROOT_ULLON) / xTileEdge));
+        int queryLeftTiles = Math.abs((int) ((queryULLON - ROOT_ULLON) / xTileEdge)); // tiles left of box
         int queryRightTiles = Math.abs((int) ((ROOT_LRLON - queryLRLON) / xTileEdge));
-        int queryUpTiles = Math.abs((int) ((queryULLAT - ROOT_ULLAT) / yTileEdge));
+        int queryUpTiles = Math.abs((int) ((queryULLAT - ROOT_ULLAT) / yTileEdge)); // tiles before box
         int queryDownTiles = Math.abs((int) ((ROOT_LRLAT - queryLRLAT) / yTileEdge));
-        int xk = (int) numTiles - (queryLeftTiles + queryRightTiles); // num of x tiles
-        int yk = (int) numTiles - (queryUpTiles + queryDownTiles); // num of y tiles
-        String[][] grid = new String[xk][yk];
+        int xk = (int) numTiles - (queryLeftTiles + queryRightTiles); // num of x tiles in query box
+        int yk = (int) numTiles - (queryUpTiles + queryDownTiles); // num of y tiles in query box
+        String[][] grid = new String[yk][xk];
 
         int x = queryLeftTiles;
         int y = queryUpTiles;
@@ -175,10 +179,10 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         double result = ROOT_ULLAT;
         double numTiles = Math.pow(2, depth);
         double yTileEdge = (ROOT_ULLAT - ROOT_LRLAT) / numTiles;
-        int tiles = Math.abs((int) ((ROOT_ULLAT - input) / yTileEdge));
-        while (tiles > 0) {
-            result += yTileEdge;
-            tiles -= 1;
+        int tilesBefore = Math.abs((int) ((ROOT_ULLAT - input) / yTileEdge));
+        while (tilesBefore > 0) {
+            result -= yTileEdge;
+            tilesBefore -= 1;
         }
         return result;
     }
@@ -187,15 +191,14 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
         double result = ROOT_ULLON;
         double numTiles = Math.pow(2, depth);
         double xTileLength = (ROOT_LRLON - ROOT_ULLON) / numTiles; // longitude per tile
-        int tiles = Math.abs((int) (input / xTileLength)) + 1; // tiles before box
-        while (tiles > 0) {
+        int tilesBefore = Math.abs((int) ((input - ROOT_ULLON) / xTileLength)) + 1;
+        while (tilesBefore > 0) {
             result += xTileLength;
-            tiles -= 1;
+            tilesBefore -= 1;
         }
         return result;
     }
 
-    /*right*/
     private Double rasterLRLAT(double input, int depth) {
         double result = ROOT_LRLAT;
         double numTiles = Math.pow(2, depth);

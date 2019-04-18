@@ -45,8 +45,6 @@ public class TestRasterAPIHandler {
             Map<String, Double> params = testParams.get(i);
             Map<String, Object> actual = rasterer.processRequest(params, null);
             Map<String, Object> expected = expectedResults.get(i);
-            System.out.println(actual.entrySet());
-            System.out.println(expected.entrySet());
             String msg = "Your results did not match the expected results for input "
                          + mapToString(params) + ".\n";
             checkParamsMap(msg, expected, actual);
