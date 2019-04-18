@@ -12,13 +12,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
-import static bearmaps.proj2c.utils.Constants.SEMANTIC_STREET_GRAPH;
-import static bearmaps.proj2c.utils.Constants.ROUTE_LIST;
+import static bearmaps.proj2c.utils.Constants.*;
 
 /**
  * Handles requests from the web browser for map images. These images
@@ -84,12 +81,131 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
-        Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
-        return results;
+        Map<String, Object> result = new HashMap<>();
+        if (validate(requestParams)) {
+            queryFail();
+        } else {
+            int depth = depthFinder(requestParams);
+            result.put("render_grid", grid(requestParams, depth));
+            result.put("raster_ul_lon", rasterULLON(requestParams.get("ullon"), depth));
+            result.put("raster_ul_lat", rasterULLAT(requestParams.get("ullat"), depth));
+            result.put("raster_lr_lon", rasterLRLON(requestParams.get("lrlon"), depth));
+            result.put("raster_lr_lat", rasterLRLAT(requestParams.get("lrlat"), depth));
+            result.put("depth", depth);
+            result.put("query_success", true);
+        }
+        return result;
+    }
+
+    /**
+     * checks if the query is valid
+     * @return true if invalid query and false if valid
+     */
+    private boolean validate(Map<String, Double> params) {
+        Double lrlon = params.get("lrlon");
+        Double lrlat = params.get("lrlat");
+        Double ullon = params.get("ullon");
+        Double ullat = params.get("ullat");
+        if ((lrlon > ullon) || (lrlat > ullat)) {
+            return false;
+        }
+        return true;
+    }
+
+    private int depthFinder(Map<String, Double> requestParams) {
+        Double lrlon = requestParams.get("lrlon");
+        Double ullon = requestParams.get("ullon");
+        Double w = requestParams.get("w");
+        Double rasterLonDPP = (lrlon - ullon) / w;
+        Double lonDPP = (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
+
+        int i = 0;
+        while ((lonDPP > rasterLonDPP) && (i < 7)) {
+            i++;
+            lonDPP = lonDPP / 2;
+        }
+        return i;
+    }
+
+    private String[][] grid(Map<String, Double> params, int depth) {
+        double numTiles = Math.pow(2, depth);
+        Double queryLRLON = params.get("lrlon");
+        Double queryLRLAT = params.get("lrlat");
+        Double queryULLON = params.get("ullon");
+        Double queryULLAT = params.get("ullat");
+
+        double xTileEdge = Math.abs((ROOT_LRLON - ROOT_ULLON) / numTiles); // longitude per tile
+        double yTileEdge = Math.abs((ROOT_ULLAT - ROOT_LRLAT) / numTiles); // latitude per tile
+        int queryLeftTiles = Math.abs((int) ((queryULLON - ROOT_ULLON) / xTileEdge));
+        int queryRightTiles = Math.abs((int) ((ROOT_LRLON - queryLRLON) / xTileEdge));
+        int queryUpTiles = Math.abs((int) ((queryULLAT - ROOT_ULLAT) / yTileEdge));
+        int queryDownTiles = Math.abs((int) ((ROOT_LRLAT - queryLRLAT) / yTileEdge));
+        int xk = (int) numTiles - (queryLeftTiles + queryRightTiles); // num of x tiles
+        int yk = (int) numTiles - (queryUpTiles + queryDownTiles); // num of y tiles
+        String[][] grid = new String[xk][yk];
+
+        int x = queryLeftTiles;
+        int y = queryUpTiles;
+        for (int yCounter = 0; yCounter < yk; yCounter++) {
+            for (int xCounter = 0; xCounter < xk; xCounter++) {
+                grid[yCounter][xCounter] = "d" + depth + "_x" + x + "_y" + y + ".png";
+                x++;
+            }
+            y++;
+            x = queryLeftTiles;
+        }
+        return grid;
+    }
+
+    /* x-axis */
+    private Double rasterULLON(double input, int depth) {
+        double result = ROOT_ULLON;
+        double numTiles = Math.pow(2, depth);
+        double xTileLength = (ROOT_LRLON - ROOT_ULLON) / numTiles; // longitude per tile
+        int tiles = Math.abs((int) ((input - ROOT_ULLON) / xTileLength)); // tiles before box
+        while (tiles > 0) {
+            result += xTileLength;
+            tiles -= 1;
+        }
+        return result;
+    }
+
+    /* y-axis */
+    private Double rasterULLAT(double input, int depth) {
+        double result = ROOT_ULLAT;
+        double numTiles = Math.pow(2, depth);
+        double yTileEdge = (ROOT_ULLAT - ROOT_LRLAT) / numTiles;
+        int tiles = Math.abs((int) ((ROOT_ULLAT - input) / yTileEdge));
+        while (tiles > 0) {
+            result += yTileEdge;
+            tiles -= 1;
+        }
+        return result;
+    }
+
+    private Double rasterLRLON(double input, int depth) {
+        double result = ROOT_ULLON;
+        double numTiles = Math.pow(2, depth);
+        double xTileLength = (ROOT_LRLON - ROOT_ULLON) / numTiles; // longitude per tile
+        int tiles = Math.abs((int) (input / xTileLength)) + 1; // tiles before box
+        while (tiles > 0) {
+            result += xTileLength;
+            tiles -= 1;
+        }
+        return result;
+    }
+
+    /*right*/
+    private Double rasterLRLAT(double input, int depth) {
+        double result = ROOT_LRLAT;
+        double numTiles = Math.pow(2, depth);
+        double yTileEdge = (ROOT_ULLAT - ROOT_LRLAT) / numTiles;
+        int tiles = Math.abs((int) ((input - ROOT_LRLAT) / yTileEdge));
+        while (tiles > 0) {
+            result += yTileEdge;
+            tiles -= 1;
+        }
+        return result;
     }
 
     @Override
