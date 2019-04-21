@@ -15,7 +15,7 @@ import java.util.Random;
 public class HexWorld {
 
     /**
-     * @source Lab 12 - Hug's code 
+     * @source Lab 12 - Hug's code
      * */
     public static void addHexagon(TETile[][] world, Position p, int s, TETile t) {
         if (s < 2) {
