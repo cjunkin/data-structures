@@ -104,7 +104,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         root = Helper(root, key, value);
     }
 
-    /* ! LOOK OVER THIS TO LEARN !
+    /* @flag
+    * ! LOOK OVER THIS TO LEARN !
     * @source 1 - 3 Lab at Soda 273
     * */
     private Node Helper(Node curr, K key, V value) {
