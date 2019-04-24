@@ -21,5 +21,18 @@ public class HexWorld {
         if (s < 2) {
             throw new IllegalArgumentException("Hexagon must be at least size 2.");
         }
+        TERenderer ter = new TERenderer();
+        ter.initialize(100, 100);
+
+        for (int i = 0; i < s; i++) {
+            world[s][s] = t;
+            s++;
+        }
+
+        ter.renderFrame(world);
     }
+
+    public static void main(String[] args) {
+    }
+
 }
