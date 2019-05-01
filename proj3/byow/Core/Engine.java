@@ -7,7 +7,7 @@ public class Engine {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
+    public static final int HEIGHT = 40;
 
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
@@ -45,7 +45,9 @@ public class Engine {
         //
         // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
         // that works for many different input types.
-        TETile[][] finalWorldFrame = Generator.generate(input);
+
+        Generator g = new Generator(WIDTH, HEIGHT);
+        TETile[][] finalWorldFrame = g.generate(input, 0);
         return finalWorldFrame;
     }
 }
